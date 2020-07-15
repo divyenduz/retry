@@ -414,15 +414,7 @@ module.exports = require("path");
 /***/ 676:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-const {
-  getInput,
-  error,
-  warning,
-  info,
-  debug,
-  setOutput,
-  exportVariable,
-} = __webpack_require__(470);
+const { getInput, error, warning, info, debug } = __webpack_require__(470);
 const { spawn } = __webpack_require__(129);
 const { join } = __webpack_require__(622);
 const ms = __webpack_require__(156);
@@ -492,7 +484,6 @@ async function runAction() {
   fs.writeFileSync('last_attempt', 'false');
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      fs.writeFileSync('attempt', attempt.toString());
       if (attempt === MAX_ATTEMPTS) {
         fs.writeFileSync('last_attempt', 'true');
       }
