@@ -1,8 +1,18 @@
-const { getInput, error, warning, info, debug } = require('@actions/core');
+const {
+  getInput,
+  error,
+  warning,
+  info,
+  debug,
+  setOutput,
+  exportVariable,
+} = require('@actions/core');
 const { spawn } = require('child_process');
 const { join } = require('path');
 const ms = require('milliseconds');
-var kill = require('tree-kill');
+const kill = require('tree-kill');
+
+const fs = require('fs');
 
 function getInputNumber(id, required) {
   const input = getInput(id, { required });
@@ -63,8 +73,13 @@ async function retryWait() {
 }
 
 async function runAction() {
+  fs.writeFileSync('last_attempt', 'false');
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
+      fs.writeFileSync('attempt', attempt.toString());
+      if (attempt === MAX_ATTEMPTS) {
+        fs.writeFileSync('last_attempt', 'true');
+      }
       await runCmd();
       info(`Command completed after ${attempt} attempt(s).`);
       break;
